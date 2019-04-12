@@ -14,4 +14,34 @@ describe 'タスク管理機能', type: :system do
       end
     end
   end
+
+  describe 'バリデーションのテスト' do
+    before do
+      @task = FactoryBot.build(:task, name: '')
+    end
+    context '一覧ページを見たとき' do
+      # before do
+      #   visit tasks_path
+      # end
+      it '名称が空だとNG' do
+        @task.name = ''
+        expect(@task.valid?).to eq(false)
+      end
+    end
+  end
+
+  #↓動かないコード
+  # describe '20文字以上入れたときのバリデーションテスト' do
+  #   before do
+  #     FactoryBot.create(:task, name: 'このタスクは長さが２０文字いじょうあります。')
+  #   end
+  #   context '一覧ページを見たとき' do
+  #     before do
+  #       visit tasks_path
+  #     end
+  #     it 'タスク一覧に20文字以上のタスクが登録されていない' do
+  #       expect(task.error[:name]).to have_content '名称は20文字以内で入力してください'
+  #     end
+  #   end
+  # end
 end
