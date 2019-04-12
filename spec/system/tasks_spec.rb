@@ -15,6 +15,25 @@ describe 'タスク管理機能', type: :system do
     end
   end
 
+  describe '上から作成日時の新しい順版に並び替えのテスト' do
+    before do
+      @task = FactoryBot.create(:task, name: '一番下にくるタスク')
+      @task2 = FactoryBot.create(:task, name: '真ん中にくるタスク')
+      @task3 = FactoryBot.create(:task, name: '一番上にくるタスク')
+    end
+    context '一覧ページを見たとき' do
+      before do
+        visit tasks_path
+      end
+      it '上から作成日時の新しい順番にならんでいる' do
+        within '.tasks' do
+          task_names = all('.task-title').map(&:text)
+          expect(task_names).to eq %w(一番上にくるタスク 真ん中にくるタスク 一番下にくるタスク)
+        end
+      end
+    end
+  end
+
   describe 'バリデーションのテスト' do
     before do
       @task = FactoryBot.build(:task, name: '')
