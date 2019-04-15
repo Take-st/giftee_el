@@ -22,3 +22,13 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+herokuにデプロイする方法
+git push heroku master
+(herokuのmasterブランチにpushする)
+基本的にローカルのmasterブランチの内容をpushする仕様
+一度ローカルでmasterにマージしてからpushしよう。
+
+加えてデータベースのマイグレーションもする必要あり。
+heroku run rails db:migrate
