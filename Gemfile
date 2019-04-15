@@ -66,4 +66,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 #default gems up to here. From here install by myself.
 gem 'slim-rails'
 gem 'html2slim'
-gem 'bootstrap'
+gem 'bootstrap', '~> 4.1.1'
+gem 'jquery-rails'
