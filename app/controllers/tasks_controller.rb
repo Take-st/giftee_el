@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
 
   def index
-    # @tasks = Task.all.order(created_at: :desc)
-    @tasks = Task.all.order(params[:sort])
+    @tasks = Task.all.order(params[:sort] + ' ' + params[:direction])
+    # ↑↑↑これは安全ではない。SQLインジェクションに弱い。
   end
 
   def show
