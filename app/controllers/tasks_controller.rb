@@ -1,8 +1,9 @@
 class TasksController < ApplicationController
-
+  #application_helperでも使えるようにする。application_helperはviewから呼び出せる。
+  helper_method :sort_column, :sort_direction
+  
   def index
-    @tasks = Task.all.order(params[:sort] + ' ' + params[:direction])
-    # ↑↑↑これは安全ではない。SQLインジェクションに弱い。
+    @tasks = Task.all.order(sort_column + ' ' + sort_direction)
   end
 
   def show
@@ -47,4 +48,11 @@ class TasksController < ApplicationController
       params.require(:task).permit(:name, :description, :deadline_at)
     end
 
+    def sort_column
+      Task.column_names.include?(params[:sort]) ? params[:sort] : "created_at"
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+    end
 end

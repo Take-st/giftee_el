@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'タスク管理機能', type: :system do
   describe '一覧表示機能のテスト' do
     before do
-      FactoryBot.create(:task, name: 'テスト用タスク')
+      FactoryBot.create(:task, name: 'テスト用タスク', deadline_at: '2019-04-20')
     end
     context '一覧ページを見たとき' do
       before do
@@ -17,9 +17,9 @@ describe 'タスク管理機能', type: :system do
 
   describe '上から作成日時の新しい順版に並び替えのテスト' do
     before do
-      @task = FactoryBot.create(:task, name: '一番下にくるタスク')
-      @task2 = FactoryBot.create(:task, name: '真ん中にくるタスク')
-      @task3 = FactoryBot.create(:task, name: '一番上にくるタスク')
+      @task = FactoryBot.create(:task, name: '一番下にくるタスク', deadline_at: '2019-04-20')
+      @task2 = FactoryBot.create(:task, name: '真ん中にくるタスク', deadline_at: '2019-04-20')
+      @task3 = FactoryBot.create(:task, name: '一番上にくるタスク', deadline_at: '2019-04-20')
     end
     context '一覧ページを見たとき' do
       before do
@@ -27,7 +27,7 @@ describe 'タスク管理機能', type: :system do
       end
       it '上から作成日時の新しい順番にならんでいる' do
         within '.tasks' do
-          task_names = all('.task-title').map(&:text)
+          task_names = all('.task-name').map(&:text)
           expect(task_names).to eq %w(一番上にくるタスク 真ん中にくるタスク 一番下にくるタスク)
         end
       end
@@ -39,7 +39,7 @@ describe 'タスク管理機能', type: :system do
       @task = FactoryBot.build(:task, name: '')
       @task2 = FactoryBot.build(:task, name: 'このタスクは長さが２０文字いじょうあります。')
     end
-    context '一覧ページを見たとき' do
+    context '一覧ページには飛ばないで検証' do
       it '名称が空だとNG' do
         expect(@task.valid?).to eq(false)
       end
@@ -48,5 +48,58 @@ describe 'タスク管理機能', type: :system do
       end
     end
   end
+
+  # ここのテストは１つ目のテストと統合できそう
+  describe '終了期限の設定のテスト' do
+    before do
+      @task = FactoryBot.create(:task, name: '終了期限は４月２０日', deadline_at: '2019-04-20')
+    end
+    context '一覧ページを見たとき' do
+      before do
+        visit tasks_path
+      end
+      it '終了期限付きのタスクが表示されている' do
+        expect(page).to have_content '2019-04-20'
+      end
+    end
+  end
+
+  # ソートボタンをクリックして、並びが変わっていたらOK
+  # それぞれのカラムには同じメソッドを使っているので一つを調べれば十分
+  # 代表して、終了期限のソート機能を検証する。
+  describe 'ソート機能のテスト' do
+    before do
+      @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10')
+      @task = FactoryBot.create(:task, name: '５月２０日', deadline_at: '2019-05-20')
+      @task = FactoryBot.create(:task, name: '６月３０日', deadline_at: '2019-06-30')
+    end
+    context '一度終了期限をクリックしたとき' do
+      before do
+        visit tasks_path
+        click_link '終了期限'
+      end
+      it '上から終了期限の昇順に並んでいる' do
+        within '.tasks' do
+          task_names = all('.task-name').map(&:text)
+          expect(task_names).to eq %w(４月１０日 ５月２０日 ６月３０日)
+        end
+      end
+    end
+    context '二度終了期限をクリックしたとき' do
+      before do
+        visit tasks_path
+        click_link '終了期限'
+        click_link '終了期限'
+      end
+      it '上から終了期限の降順に並んでいる' do
+        within '.tasks' do
+          task_names = all('.task-name').map(&:text)
+          expect(task_names).to eq %w(６月３０日 ５月２０日 ４月１０日)
+        end
+      end
+    end
+  end
+
+
 
 end
