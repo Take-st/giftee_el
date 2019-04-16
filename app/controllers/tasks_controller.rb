@@ -26,8 +26,8 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = Task.new(task_params)
-    if @task.save
+    task = Task.find(params[:id])
+    if task.update(task_params)
       redirect_to task_url, notice: "タスク「#{task.name}」を更新しました。"
     else
       render :edit
@@ -43,7 +43,7 @@ class TasksController < ApplicationController
   private
 
     def task_params
-      params.require(:task).permit(:name, :description)
+      params.require(:task).permit(:name, :description, :deadline_at)
     end
 
 end

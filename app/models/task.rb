@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
   validates :name, presence: true, length: { maximum: 20 }
   validate :validate_name_not_including_comma
+  validates :deadline_at, presence: true
 
   private
 
