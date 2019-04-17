@@ -98,20 +98,27 @@ describe 'タスク管理機能', type: :system do
         end
       end
     end
-
-    # describe '検索機能（絞り込み機能）のテスト' do 
-    #   before do 
-    #     @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10')
-    #     @task = FactoryBot.create(:task, name: '５月２０日', deadline_at: '2019-05-20')
-    #     @task = FactoryBot.create(:task, name: '６月３０日', deadline_at: '2019-06-30')
-    #   end
-    # end
-
-
-
-
-
   end
+
+    describe '検索機能（絞り込み機能）のテスト' do
+      before do 
+        @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10', status: 'New')
+        @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10', status: 'WIP')
+        @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10', status: 'Done')
+        @task = FactoryBot.create(:task, name: 'New Super Mario', deadline_at: '2019-04-10', status: 'Done')
+      end
+      context '一覧ページアクセス後、Newで検索をかけたとき' do
+        before do
+          visit tasks_path
+          find("input[type='text']").set("New")
+          click_on '検索する'
+        end
+        it 'New,newの文字をステータスか名称にもつタスクが２つだけ表示、それ以外は表示されない' do
+          expect(page).to have_content('New', count: 2)
+          expect(page).not_to have_content'WIP'
+        end
+      end
+    end
 
 
 

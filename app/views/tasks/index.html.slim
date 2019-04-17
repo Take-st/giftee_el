@@ -2,7 +2,7 @@ h1 タスク一覧
 
 = form_with url: tasks_path, method: :get, local: true, class: 'search-form' do |f|
   .form-group
-    = f.text_field :search, class: 'form-control'
+    = f.text_field :search, class: 'form-control search-input'
   = f.submit "検索する", class: 'btn btn-primary'
 
 = link_to '新規登録', new_task_path, class: 'btn btn-primary'
