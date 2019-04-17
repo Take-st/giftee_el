@@ -1,5 +1,10 @@
 h1 タスク一覧
 
+= form_with url: tasks_path, method: :get, local: true, class: 'search-form' do |f|
+  .form-group
+    = f.text_field :search, class: 'form-control'
+  = f.submit "検索する", class: 'btn btn-primary'
+
 = link_to '新規登録', new_task_path, class: 'btn btn-primary'
 
 .mb-3
@@ -7,6 +12,7 @@ table.table.table-hover
   thread.thread-default
     tr
       th = sortable "name", Task.human_attribute_name(:name)
+      th = sortable "status", Task.human_attribute_name(:status)
       th = sortable "deadline_at", Task.human_attribute_name(:deadline_at)
       th = sortable "created_at", Task.human_attribute_name(:created_at)
       th
@@ -15,6 +21,7 @@ table.table.table-hover
     - @tasks.each do |task|
       tr
         td= link_to task.name, task_path(task), class: 'task-name'
+        td = task.status
         td= task.deadline_at
         td= task.created_at
         td

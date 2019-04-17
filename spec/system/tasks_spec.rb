@@ -98,6 +98,19 @@ describe 'タスク管理機能', type: :system do
         end
       end
     end
+
+    # describe '検索機能（絞り込み機能）のテスト' do 
+    #   before do 
+    #     @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10')
+    #     @task = FactoryBot.create(:task, name: '５月２０日', deadline_at: '2019-05-20')
+    #     @task = FactoryBot.create(:task, name: '６月３０日', deadline_at: '2019-06-30')
+    #   end
+    # end
+
+
+
+
+
   end
 
 
