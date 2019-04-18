@@ -3,7 +3,6 @@ class TasksController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
-    # @tasks = Task.all.order(sort_column + ' ' + sort_direction)
     @tasks = Task.all.search(params[:search]).order(sort_column + ' ' + sort_direction)
   end
 

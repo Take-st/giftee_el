@@ -1,3 +1,5 @@
+# spec/system
+
 require 'rails_helper'
 
 describe 'タスク管理機能', type: :system do
