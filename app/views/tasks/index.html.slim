@@ -12,6 +12,7 @@ table.table.table-hover
   thread.thread-default
     tr
       th = sortable "name", Task.human_attribute_name(:name)
+      th = sortable "priority", Task.human_attribute_name(:priority)
       th = sortable "status", Task.human_attribute_name(:status)
       th = sortable "deadline_at", Task.human_attribute_name(:deadline_at)
       th = sortable "created_at", Task.human_attribute_name(:created_at)
@@ -21,6 +22,7 @@ table.table.table-hover
     - @tasks.each do |task|
       tr
         td= link_to task.name, task_path(task), class: 'task-name'
+        td = task.priority
         td = task.status
         td= task.deadline_at
         td= task.created_at

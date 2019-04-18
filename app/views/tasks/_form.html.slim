@@ -8,6 +8,10 @@
     = f.label :name
     = f.text_field :name, class: 'form-control', id: 'task_name'
     .form-group
+    = f.label :priority
+    = f.select :priority, {'高': '高', '中': '中', '低': '低'}, :prompt => "選択してください", class: 'form-control', id: 'task_priority'
+    /                       ↑左は選択肢に出てくる。右は一覧表示のときに出てくる。
+    .form-group
     = f.label :status
     = f.select :status, {New: 'New', WIP: 'WIP', Done: 'Done'}, :prompt => "選択してください", class: 'form-control', id: 'task_status'
   .form-group

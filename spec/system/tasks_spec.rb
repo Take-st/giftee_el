@@ -123,5 +123,38 @@ describe 'タスク管理機能', type: :system do
     end
 
 
-
+    describe 'ソート機能のテスト' do
+      before do
+        @task = FactoryBot.create(:task, name: '４月１０日', deadline_at: '2019-04-10', priority: '高')
+        @task = FactoryBot.create(:task, name: '５月２０日', deadline_at: '2019-05-20', priority: '中')
+        @task = FactoryBot.create(:task, name: '６月３０日', deadline_at: '2019-06-30', priority: '低')
+      end
+      context '一度優先度をクリックしたとき' do
+        before do
+          visit tasks_path
+          click_link '優先度'
+        end
+        it '上から優先度の昇順（中→低→高）に並んでいる' do
+          within '.tasks' do
+            task_names = all('.task-name').map(&:text)
+            expect(task_names).to eq %w(５月２０日 ６月３０日 ４月１０日)
+          end
+        end
+      end
+      context '二度優先度をクリックしたとき' do
+        before do
+          visit tasks_path
+          click_link '優先度'
+          click_link '優先度'
+        end
+        it '上から優先度の降順（高→低→中）に並んでいる' do
+          within '.tasks' do
+            task_names = all('.task-name').map(&:text)
+            expect(task_names).to eq %w(４月１０日 ６月３０日 ５月２０日)
+          end
+        end
+      end
+    end
+    # 今の昇順・降順は要素の名前の順番になってしまっていて、中→低→高というふうに並んでいる。
+    # 本当は高→中→低の順番にソートしたい。でも時間がないので時間があれば実装してみることにする。
 end
