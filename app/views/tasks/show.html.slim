@@ -11,6 +11,14 @@ table.table.table-hover
       th= Task.human_attribute_name(:name)
       td= @task.name
     tr
+      th= Task.human_attribute_name(:category)
+      td
+        - task.categories.each_with_index do |category, i|
+          = link_to category.name, tasks_path(category_id: category.id)
+          - if i != task.categories.length - 1
+            = ","
+
+    tr
       th= Task.human_attribute_name(:status)
       td= @task.status
     tr

@@ -26,7 +26,8 @@ class Admin::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to admin_users_path, notice: "ユーザー「#{@user.name}」を登録しました。"
+      flash[:success] = "ユーザー「#{@user.name}」を登録しました。"
+      redirect_to admin_users_path
     else
       render :new
     end
@@ -37,7 +38,8 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     
     if @user.update(user_params)
-      redirect_to admin_user_path(@user), notice: "ユーザー「#{@user.name}」を更新しました。"
+      flash[:success] = "ユーザー「#{@user.name}」を更新しました。"
+      redirect_to admin_user_path(@user)
     else
       render :new
     end
@@ -46,8 +48,13 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-    redirect_to admin_users_url, notice: "ユーザー「#{@user.name}」を削除しました。"
+    if current_user != @user
+      @user.destroy
+      flash[:success] = "ユーザー「#{@user.name}」を削除しました。"
+    else
+      flash[:danger] = "管理ユーザーは自分を削除できません。"
+      redirect_to admin_users_url
+    end
   end
 
 
@@ -59,12 +66,12 @@ class Admin::UsersController < ApplicationController
 
   def require_admin
     unless current_user
-      flash[:notice] = "管理者権限がありません。ログインしてください。"
+      flash[:danger] = "管理者権限がありません。ログインしてください。"
       redirect_to login_path
       return
     else
       unless current_user.admin?
-        flash[:notice] = "管理者権限がありません。"
+        flash[:danger] = "管理者権限がありません。"
         redirect_to root_path
       end
     end

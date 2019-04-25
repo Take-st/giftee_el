@@ -11,15 +11,16 @@ class ApplicationController < ActionController::Base
   def login_required
     # redirect_to login_path unless current_user
     unless current_user
-      flash[:notice] = "ログインしてください。"
+      flash[:danger] = "ログインしてください。"
       redirect_to login_path
     end
   end
 
+  # だめ
   def set_task_count
     user = current_user
     user.count = current_user.tasks.count
     user.save
   end
-  
+
 end

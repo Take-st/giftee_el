@@ -15,6 +15,7 @@ table.table.table-hover
   thread.thread-default
     tr
       th = sortable "name", Task.human_attribute_name(:name)
+      th = sortable "priority", Task.human_attribute_name(:category)
       th = sortable "priority", Task.human_attribute_name(:priority)
       th = sortable "status", Task.human_attribute_name(:status)
       th = sortable "deadline_at", Task.human_attribute_name(:deadline_at)
@@ -24,11 +25,17 @@ table.table.table-hover
   tbody.tasks
     - @tasks.each do |task|
       tr
-        td= link_to task.name, task_path(task), class: 'task-name'
+        td = link_to task.name, task_path(task), class: 'task-name'
+        td
+          - task.categories.each_with_index do |category, i|
+            = link_to category.name, tasks_path(category_id: category.id)
+            - if i != task.categories.length - 1
+              = ","
+        = puts task.categories.pluck(:name).class
         td = task.priority
         td = task.status
-        td= task.deadline_at
-        td= task.created_at
+        td = task.deadline_at
+        td = task.created_at
         td
           = link_to '編集', edit_task_path(task), class: 'btn btn-primary mr-3'
           = link_to '削除', task, method: :delete, data: { confirm: "タスク「#{task.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'

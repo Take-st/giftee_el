@@ -1,15 +1,29 @@
-10.times do |n|
-  user = User.find(11)
+1.times do |n|
   name = Faker::JapaneseMedia::DragonBall.character
-  priority = '高'
-  status = "WIP"
-  deadline_at = "2019-05-30"
-  user.tasks.create!(name: name,
-                    priority: priority,
-                    status: status,
-                    deadline_at: deadline_at,
-                    )
+  # email = "a#{n}.com"
+  email = "admin.com"
+  password = "11111111"
+  password_confirmation = "11111111"
+  User.create!( name: name,
+                email: email,
+                password: password,
+                password_confirmation: password_confirmation,
+                admin: true,
+                )
 end
+
+# 10.times do |n|
+#   user = User.find(11)
+#   name = Faker::JapaneseMedia::DragonBall.character
+#   priority = '高'
+#   status = "WIP"
+#   deadline_at = "2019-05-30"
+#   user.tasks.create!(name: name,
+#                     priority: priority,
+#                     status: status,
+#                     deadline_at: deadline_at,
+#                     )
+# end
 
 # 10.times do |n|
 #   name = Faker::JapaneseMedia::DragonBall.character
